@@ -1,5 +1,5 @@
 project(libnserial C CXX)
-include(${CMAKE_MODULE_PATH}/doxygen.cmake)
+# include(${CMAKE_MODULE_PATH}/doxygen.cmake)
 include(${CMAKE_MODULE_PATH}/serial.cmake)
 include(GNUInstallDirs)
 
@@ -70,7 +70,11 @@ add_library(nserial SHARED ${NSERIAL_SRCS})
 set_target_properties(nserial PROPERTIES
   VERSION ${VERSION_MAJOR}.${VERSION_MINOR}
   SOVERSION ${VERSION_MAJOR}
-  FRAMEWORK ON
+  if (${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
+    FRAMEWORK OFF
+  else
+    FRAMEWORK ON
+  endif()
   PUBLIC_HEADER ${NSERIAL_PUBLIC_HEADERS})
 
 # Add all targets to the build-tree export set
@@ -122,6 +126,6 @@ install(FILES
 install(EXPORT nserialTargets DESTINATION
   "${CMAKE_INSTALL_CMAKEDIR}" COMPONENT dev)
 
-add_subdirectory(unittest)
-add_subdirectory(comptest)
+# add_subdirectory(unittest)
+# add_subdirectory(comptest)
 
